@@ -8,8 +8,8 @@
 void init(zx_handle_t chan, void *vdso, int (*printf)(const char*, ...));
 
 int main() {
-//  char* path = "/home/fctorial/src/fuchsia/fuchsia/out/bringup.qemu-x64/user.vdso_x64/libzircon.so.debug";
-  char* path = "/home/fctorial/src/fuchsia/fuchsia/out/bringup.qemu-x64/libzircon.so";
+  char* path = "/home/fctorial/src/fuchsia/fuchsia/out/bringup.qemu-x64/user.vdso_x64/libzircon.so.debug";
+//  char* path = "/home/fctorial/src/fuchsia/fuchsia/out/bringup.qemu-x64/libzircon.so";
   int fd = open(path, O_RDONLY);
   int size = lseek(fd, (size_t) 0, SEEK_END);
   lseek(fd, (size_t) 0, SEEK_SET);
