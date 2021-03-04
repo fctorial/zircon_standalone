@@ -9,8 +9,7 @@ out/linker: build/gen_linker.js ${FOUT}/gen/zircon/vdso/zx.fidl.json
 out/init: init.c out/linker Makefile
 	${CC} -ggdb -fno-stack-protector \
 	    -Wno-attributes \
-	    -I../zircon/system/public -Ibuild \
-	    -I${FOUT}/gen/include \
+	    -I../zircon/system/public -Ibuild -I${FOUT}/gen/include \
 	    -static -nostdlib -fPIC -fPIE -Wl,--entry=init \
 	    -o out/init init.c lib.c out/linker.c
 	elfedit --output-type dyn out/init
