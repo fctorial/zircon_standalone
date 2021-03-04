@@ -1,4 +1,4 @@
-#include "lib.h"
+#include "stdlib.h"
 
 const char* zx_status_get_string(zx_status_t status) {
   switch (status) {

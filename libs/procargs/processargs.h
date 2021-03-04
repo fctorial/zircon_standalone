@@ -63,7 +63,18 @@ typedef struct {
   zx_handle_t job_self;
   zx_handle_t vmar_root;
   zx_handle_t vmo_vdso;
+  zx_handle_t vmo_stack;
+  zx_handle_t vmo_executable;
+  zx_handle_t vmo_zbi;
+  zx_handle_t vmo_bootfs;
+  zx_handle_t vmo_kernel_file;
   zx_handle_t clock_utc;
+  zx_handle_t mmio;
+  zx_handle_t irq;
+  zx_handle_t ioport;
+  zx_handle_t smc;
+  zx_handle_t sys;
+  zx_handle_t res_;
 } handles_container_t;
 
 // Handle Info entries associate a type and optional
@@ -186,7 +197,7 @@ __END_CDECLS
 
 // Examine the next message to be read from the channel, and yield
 // the data size and number of handles in that message.
-zx_status_t processargs_message_size(zx_handle_t channel, uint32_t* nbytes, uint32_t* nhandles);
+zx_status_t processargs_message_size(zx_handle_t channel, uint32_t *nbytes, uint32_t *nhandles);
 
 // Define a properly-aligned buffer on the stack for reading a
 // processargs message.  The nbytes parameter should be gotten from
@@ -198,13 +209,15 @@ zx_status_t processargs_message_size(zx_handle_t channel, uint32_t* nbytes, uint
 // message-pipe handle.  This reads the message into that buffer, validates
 // the message format of, and yields pointers into the buffer for the
 // header and the handle-info array.
-zx_status_t processargs_read(zx_handle_t bootstrap, void* buffer, uint32_t nbytes,
-                             zx_handle_t handles[], uint32_t nhandles, zx_proc_args_t** pargs,
-                             uint32_t** handle_info);
+zx_status_t processargs_read(zx_handle_t bootstrap, void *buffer, uint32_t nbytes,
+                             zx_handle_t handles[], uint32_t nhandles, zx_proc_args_t **pargs,
+                             uint32_t **handle_info);
 
 // Extract known handle types from the handles.
 void processargs_extract_handles(uint32_t nhandles, const zx_handle_t handles[], const uint32_t handle_info[],
-                                 handles_container_t*);
+                                 handles_container_t *);
+
+void extract_handles_chan(zx_handle_t chan, handles_container_t* handles_container);
 
 // This assumes processargs_read has already succeeded on the same
 // buffer.  It unpacks the argument and environment strings into arrays
@@ -213,7 +226,7 @@ void processargs_extract_handles(uint32_t nhandles, const zx_handle_t handles[],
 // must have zx_proc_args_t.environ_num + 1 elements.  If not NULL, the
 // names[] array must have zx_proc_args_t.names_num + 1 elements. The
 // last element of each array is filled with a NULL pointer.
-zx_status_t processargs_strings(void* msg, uint32_t bytes, char* argv[], char* envp[],
-                                char* names[]);
+zx_status_t processargs_strings(void *msg, uint32_t bytes, char *argv[], char *envp[],
+                                char *names[]);
 
 #endif  // SYSROOT_ZIRCON_PROCESSARGS_H_

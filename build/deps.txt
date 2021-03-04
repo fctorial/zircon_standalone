@@ -1,6 +1,3 @@
-gen/include/zircon/syscalls/internal/cdecls.inc
-gen/zircon/vdso/zx.fidl.json
 host_x64/zbi
 kernel_x64/kernel.zbi
 multiboot.bin
-userboot_x64/gen/zircon/kernel/lib/userabi/userboot/vdso-syms.h

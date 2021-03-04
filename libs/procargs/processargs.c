@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #include "processargs.h"
-#include "../out/linker.h"
+#include <out/linker.h>
 
 #define MALFORMED ZX_ERR_INVALID_ARGS
 
@@ -55,28 +55,41 @@ zx_status_t processargs_read(zx_handle_t bootstrap, void* buffer, uint32_t nbyte
 
 void processargs_extract_handles(uint32_t nhandles, const zx_handle_t handles[], const uint32_t handle_info[], handles_container_t* handles_container) {
   for (uint32_t i = 0; i < nhandles; ++i) {
+#define ASSIGN(type, field) case type: handles_container->field = handles[i]; break;
     switch (PA_HND_TYPE(handle_info[i])) {
-      case PA_PROC_SELF:
-        handles_container->proc_self = handles[i];
-        break;
-
-      case PA_JOB_DEFAULT:
-        handles_container->job_self = handles[i];
-        break;
-
-      case PA_VMAR_ROOT:
-        handles_container->vmar_root = handles[i];
-        break;
-
-      case PA_THREAD_SELF:
-        handles_container->thread_self = handles[i];
-        break;
-
-      case PA_CLOCK_UTC:
-        handles_container->clock_utc = handles[i];
-        break;
+      ASSIGN(PA_PROC_SELF, proc_self)
+      ASSIGN(PA_JOB_DEFAULT, job_self)
+      ASSIGN(PA_VMAR_ROOT, vmar_root)
+      ASSIGN(PA_THREAD_SELF, thread_self)
+      ASSIGN(PA_CLOCK_UTC, clock_utc)
+      ASSIGN(PA_VMO_VDSO, vmo_vdso)
+      ASSIGN(PA_VMO_STACK, vmo_stack)
+      ASSIGN(PA_VMO_EXECUTABLE, vmo_executable)
+      ASSIGN(PA_VMO_BOOTDATA, vmo_zbi)
+      ASSIGN(PA_VMO_BOOTFS, vmo_bootfs)
+      ASSIGN(PA_VMO_KERNEL_FILE, vmo_kernel_file)
+      ASSIGN(PA_MMIO_RESOURCE, mmio)
+      ASSIGN(PA_IRQ_RESOURCE, irq)
+      ASSIGN(PA_IOPORT_RESOURCE, ioport)
+      ASSIGN(PA_SMC_RESOURCE, smc)
+      ASSIGN(PA_SYSTEM_RESOURCE, sys)
+      ASSIGN(PA_RESOURCE, res_)
     }
   }
+#undef ASSIGN
+}
+
+void extract_handles_chan(zx_handle_t chan, handles_container_t* handles_container) {
+  uint32_t bsc, hsc;
+  processargs_message_size(chan, &bsc, &hsc);
+
+  char bs[bsc];
+  zx_handle_t hs[hsc];
+  struct zx_proc_args* args;
+  uint32_t* handle_infos;
+  processargs_read(chan, bs, bsc, hs, hsc, &args, &handle_infos);
+
+  processargs_extract_handles(hsc, hs, handle_infos, handles_container);
 }
 
 static zx_status_t unpack_strings(char* buffer, uint32_t bytes, char* result[], uint32_t off,

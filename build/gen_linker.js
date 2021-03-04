@@ -21,7 +21,7 @@ async function main() {
     .filter(syscall => syscall.name.indexOf('test') === -1)
     .filter(syscall => exclusions.indexOf(syscall.name) === -1)
   const linker_h = [
-    '#include <syscalls.h>',
+    '#include <build/syscalls.h>',
     '',
     'void link_dependent(void*);'
   ]

@@ -1,5 +1,5 @@
-#include "build/processargs.h"
-#include "lib.h"
+#include <libs/procargs/processargs.h>
+#include <libs/utils/stdlib.h>
 #include "out/linker.h"
 
 int dprintf(const char *fmt, ...) {
@@ -47,19 +47,10 @@ void init(zx_handle_t chan, void *vdso) {
   link_dependent(vdso);
 
   dprintf("=============================\n");
-
-  uint32_t bsc, hsc;
-  processargs_message_size(chan, &bsc, &hsc);
-
-  char bs[bsc];
-  zx_handle_t hs[hsc];
-  struct zx_proc_args* args;
-  uint32_t* handle_infos;
-  processargs_read(chan, bs, bsc, hs, hsc, &args, &handle_infos);
-
   handles_container_t handles;
-  processargs_extract_handles(hsc, hs, handle_infos, &handles);
-
+  memset(&handles, 0, sizeof(handles));
+  extract_handles_chan(chan, &handles);
   dprintf("=============================\n");
+
   zx_process_exit(23);
 }
