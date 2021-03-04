@@ -1,1 +1,1 @@
-bin/init=build/init
+bin/init=out/init
