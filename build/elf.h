@@ -1,3 +1,6 @@
+#ifndef ELF_H
+#define ELF_H
+
 typedef uint16_t Elf32_Half;
 typedef uint16_t Elf64_Half;
 
@@ -2569,3 +2572,4 @@ typedef Elf32_Addr Elf32_Conflict;
 #define R_OR1K_TLS_DTPOFF 33
 #define R_OR1K_TLS_DTPMOD 34
 
+#endif
