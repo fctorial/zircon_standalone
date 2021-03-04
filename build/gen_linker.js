@@ -8,7 +8,7 @@ const exclusions = [
 
 const reg = /(WEAK_FUNCTION)\((\w+), (\w+), \w+\)/
 async function main() {
-  const lines = fs.readFileSync('/home/fctorial/src/fuchsia/fuchsia/out/bringup.qemu-x64/userboot_x64/gen/zircon/kernel/lib/userabi/userboot/vdso-syms.h').toString().split('\n').filter(e => e !== '')
+  const lines = fs.readFileSync(process.env.FOUT + '/userboot_x64/gen/zircon/kernel/lib/userabi/userboot/vdso-syms.h').toString().split('\n').filter(e => e !== '')
   const syscalls = lines.map(line => {
     const m = reg.exec(line)
     if (m) {
@@ -21,7 +21,7 @@ async function main() {
     .filter(syscall => syscall.name.indexOf('test') === -1)
     .filter(syscall => exclusions.indexOf(syscall.name) === -1)
   const linker_h = [
-    '#include "../syscalls.h"',
+    '#include <syscalls.h>',
     '',
     'void link_dependent(void*);'
   ]
