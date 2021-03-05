@@ -5,7 +5,7 @@ all: out/custom.zbi Makefile
 out/init: init.c Makefile libs
 	${CC} -ggdb -fno-stack-protector \
 	    -Wno-attributes \
-	    -I../zircon/system/public -I${FOUT}/gen/include -I. \
+	    -I../zircon/system/public -I. \
 	    -static -nostdlib -fPIC -fPIE -Wl,--entry=init \
 	    -o out/init init.c libs/utils/stdlib.c libs/procargs/processargs.c libs/linker/linker.c
 	elfedit --output-type dyn out/init
