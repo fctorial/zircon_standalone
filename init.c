@@ -1,6 +1,6 @@
 #include <libs/procargs/processargs.h>
 #include <libs/utils/stdlib.h>
-#include "out/linker.h"
+#include <libs/linker/linker.h>
 
 int dprintf(const char *fmt, ...) {
   char buf[1024];
@@ -41,10 +41,9 @@ void print_environment(struct zx_proc_args* args) {
   print_strings(base + args->names_off, args->names_num);
 }
 
-extern const void* __ehdr_start;
 
 void init(zx_handle_t chan, void *vdso) {
-  link_dependent(vdso);
+  link(vdso);
 
   dprintf("=============================\n");
   handles_container_t handles;

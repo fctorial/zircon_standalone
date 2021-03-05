@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #include "processargs.h"
-#include <out/linker.h>
+#include <libs/linker/linker.h>
 
 #define MALFORMED ZX_ERR_INVALID_ARGS
 
