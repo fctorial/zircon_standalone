@@ -60,7 +60,7 @@ struct zx_proc_args {
 typedef struct {
   zx_handle_t proc_self;
   zx_handle_t thread_self;
-  zx_handle_t job_self;
+  zx_handle_t job_default;
   zx_handle_t vmar_root;
   zx_handle_t vmo_vdso;
   zx_handle_t vmo_stack;

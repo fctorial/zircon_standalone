@@ -58,9 +58,9 @@ void processargs_extract_handles(uint32_t nhandles, const zx_handle_t handles[],
 #define ASSIGN(type, field) case type: handles_container->field = handles[i]; break;
     switch (PA_HND_TYPE(handle_info[i])) {
       ASSIGN(PA_PROC_SELF, proc_self)
-      ASSIGN(PA_JOB_DEFAULT, job_self)
-      ASSIGN(PA_VMAR_ROOT, vmar_root)
       ASSIGN(PA_THREAD_SELF, thread_self)
+      ASSIGN(PA_JOB_DEFAULT, job_default)
+      ASSIGN(PA_VMAR_ROOT, vmar_root)
       ASSIGN(PA_CLOCK_UTC, clock_utc)
       ASSIGN(PA_VMO_VDSO, vmo_vdso)
       ASSIGN(PA_VMO_STACK, vmo_stack)

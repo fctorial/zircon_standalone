@@ -1,0 +1,8 @@
+userboot=bin/init
+kernel.bypass-debuglog=true
+kernel.enable-serial-syscalls=true
+kernel.halt-on-panic=true
+kernel.root-job.behavior=halt
+userboot.shutdown=true
+TERM=screen-256color
+kernel.serial=legacy

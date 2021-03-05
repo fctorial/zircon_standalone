@@ -8,7 +8,7 @@ const exclusions = [
 
 const reg = /(WEAK_FUNCTION)\((\w+), (\w+), \w+\)/
 async function main() {
-  const lines = fs.readFileSync(process.env.FOUT + '/userboot_x64/gen/zircon/kernel/lib/userabi/userboot/vdso-syms.h').toString().split('\n').filter(e => e !== '')
+  const lines = fs.readFileSync(process.env.FUCHSIA_OUT + '/userboot_x64/gen/zircon/kernel/lib/userabi/userboot/vdso-syms.h').toString().split('\n').filter(e => e !== '')
   const syscalls = lines.map(line => {
     const m = reg.exec(line)
     if (m) {
