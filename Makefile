@@ -1,13 +1,14 @@
 CC=${FUCHSIA_DIR}/prebuilt/third_party/clang/linux-x64/bin/clang
 
+SOURCES=init.c libs/utils/stdlib.c libs/procargs/processargs.c libs/linker/linker.c libs/utils/zk.c
+
 all: out/custom.zbi Makefile
 
-out/init: init.c Makefile libs
+out/init: init.c libs Makefile
 	${CC} -ggdb -fno-stack-protector \
-	    -Wno-attributes \
 	    -I${FUCHSIA_DIR}/zircon/system/public -I. \
 	    -static -nostdlib -fPIC -fPIE -Wl,--entry=init \
-	    -o out/init init.c libs/utils/stdlib.c libs/procargs/processargs.c libs/linker/linker.c libs/utils/zk.c
+	    -o out/init ${SOURCES}
 	elfedit --output-type dyn out/init
 
 out/custom.zbi: build/make.sh out/init build/config ${FUCHSIA_OUT}/kernel_x64/kernel.zbi ${FUCHSIA_OUT}/multiboot.bin Makefile
