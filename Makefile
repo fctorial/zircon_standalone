@@ -19,3 +19,9 @@ clean:
 out/linker: build/gen_linker.js
 	node build/gen_linker.js
 	touch out/linker
+
+libs/headers/syscall_signatures.h: FORCE
+	gcc -I../zircon/system/public -I${FOUT}/gen/include build/syscalls_extractor.h -E -o libs/headers/syscall_signatures.h
+	sed -i -e '/^#/d' libs/headers/syscall_signatures.h
+
+FORCE:

@@ -1,5 +1,5 @@
 #include <libs/utils/stdlib.h>
-#include <build/elf.h>
+#include <libs/headers/elf.h>
 #include "linker.h"
 
 typedef struct {
@@ -49,7 +49,7 @@ void *find_func(lib_info_t *vi, char *name) {
   return NULL;
 }
 
-#define SYSCALL(name) typeof(_##name)* name;
+#define SYSCALL(name) typeof(__##name)* name;
 #include "syscalls.inc"
 #undef SYSCALL
 
