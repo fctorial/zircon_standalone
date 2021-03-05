@@ -4,6 +4,7 @@
 
 #include "processargs.h"
 #include <libs/linker/linker.h>
+#include <libs/utils/zk.h>
 
 #define MALFORMED ZX_ERR_INVALID_ARGS
 
@@ -55,6 +56,7 @@ zx_status_t processargs_read(zx_handle_t bootstrap, void* buffer, uint32_t nbyte
 
 void processargs_extract_handles(uint32_t nhandles, const zx_handle_t handles[], const uint32_t handle_info[], handles_container_t* handles_container) {
   for (uint32_t i = 0; i < nhandles; ++i) {
+    dlog("handle", "0x%x", PA_HND_TYPE(handle_info[i]));
 #define ASSIGN(type, field) case type: handles_container->field = handles[i]; break;
     switch (PA_HND_TYPE(handle_info[i])) {
       ASSIGN(PA_PROC_SELF, proc_self)

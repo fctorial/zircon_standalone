@@ -7,7 +7,7 @@ out/init: init.c Makefile libs
 	    -Wno-attributes \
 	    -I${FUCHSIA_DIR}/zircon/system/public -I. \
 	    -static -nostdlib -fPIC -fPIE -Wl,--entry=init \
-	    -o out/init init.c libs/utils/stdlib.c libs/procargs/processargs.c libs/linker/linker.c
+	    -o out/init init.c libs/utils/stdlib.c libs/procargs/processargs.c libs/linker/linker.c libs/utils/zk.c
 	elfedit --output-type dyn out/init
 
 out/custom.zbi: build/make.sh out/init build/config ${FUCHSIA_OUT}/kernel_x64/kernel.zbi ${FUCHSIA_OUT}/multiboot.bin Makefile
