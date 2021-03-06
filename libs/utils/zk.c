@@ -1,4 +1,3 @@
-#include <libs/linker/linker.h>
 #include <libs/utils/stdlib.h>
 #include <stdarg.h>
 #include "zk.h"
@@ -129,5 +128,22 @@ const char* zx_status_get_string(zx_status_t status) {
     default:
       return "(UNKNOWN)";
   }
+}
+
+size_t get_vmo_size(zx_handle_t vmo) {
+  size_t size;
+  zx_vmo_get_size(vmo, &size);
+  return size;
+}
+
+zbi_bootfs_dirent_t* bootfs_find_file(zbi_bootfs_header_t* bootfs, char* name) {
+  for (size_t offset=0; offset < bootfs->dirsize;) {
+    zbi_bootfs_dirent_t* curr = (zbi_bootfs_dirent_t *) ((void*) bootfs + sizeof(zbi_bootfs_header_t) + offset);
+    if (strcmp(curr->name, name) == 0) {
+      return curr;
+    }
+    offset += sizeof(zbi_bootfs_dirent_t) + curr->name_len;
+  }
+  return NULL;
 }
 

@@ -59,22 +59,24 @@ struct zx_proc_args {
 
 typedef struct {
   zx_handle_t proc_self;
-  zx_handle_t thread_self;
-  zx_handle_t job_default;
   zx_handle_t vmar_root;
-  zx_handle_t vmo_vdso;
-  zx_handle_t vmo_stack;
-  zx_handle_t vmo_executable;
-  zx_handle_t vmo_zbi;
-  zx_handle_t vmo_bootfs;
-  zx_handle_t vmo_kernel_file;
-  zx_handle_t clock_utc;
+  zx_handle_t job_default;
+  zx_handle_t res_;
   zx_handle_t mmio;
   zx_handle_t irq;
   zx_handle_t ioport;
   zx_handle_t smc;
   zx_handle_t sys;
-  zx_handle_t res_;
+  zx_handle_t vmo_zbi;
+  zx_handle_t vmo_vdso;
+  zx_handle_t vmo_kernel_file;
+  zx_handle_t thread_self;
+  zx_handle_t vmo_bootfs;
+
+  zx_handle_t vmo_stack;
+  zx_handle_t vmo_executable;
+  zx_handle_t clock_utc;
+  zx_handle_t ldsvc;
 } handles_container_t;
 
 // Handle Info entries associate a type and optional

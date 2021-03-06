@@ -75,6 +75,7 @@ void processargs_extract_handles(uint32_t nhandles, const zx_handle_t handles[],
       ASSIGN(PA_SMC_RESOURCE, smc)
       ASSIGN(PA_SYSTEM_RESOURCE, sys)
       ASSIGN(PA_RESOURCE, res_)
+      ASSIGN(PA_LDSVC_LOADER, ldsvc)
     }
   }
 #undef ASSIGN

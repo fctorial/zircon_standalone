@@ -4,8 +4,8 @@ SOURCES=init.c libs/utils/stdlib.c libs/procargs/processargs.c libs/linker/linke
 
 all: out/custom.zbi Makefile
 
-out/init: init.c libs Makefile
-	${CC} -ggdb -fno-stack-protector \
+out/init: init.c libs Makefile ${SOURCES}
+	${CC} -ggdb -O0 -fno-stack-protector \
 	    -I${FUCHSIA_DIR}/zircon/system/public -I. \
 	    -static -nostdlib -fPIC -fPIE -Wl,--entry=init \
 	    -o out/init ${SOURCES}
