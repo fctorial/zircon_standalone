@@ -68,6 +68,10 @@ void processargs_extract_handles(uint32_t nhandles, const zx_handle_t handles[],
       ASSIGN(PA_VMO_EXECUTABLE, vmo_executable)
       ASSIGN(PA_VMO_BOOTDATA, vmo_zbi)
       ASSIGN(PA_VMO_BOOTFS, vmo_bootfs)
+//      case PA_VMO_KERNEL_FILE:
+//        zx_object_get_property(handles[i], ZX_PROP_NAME, name, ZX_MAX_NAME_LEN);
+//        dlog("kernel file name", "%s", name);
+//        break;
       ASSIGN(PA_VMO_KERNEL_FILE, vmo_kernel_file)
       ASSIGN(PA_MMIO_RESOURCE, mmio)
       ASSIGN(PA_IRQ_RESOURCE, irq)

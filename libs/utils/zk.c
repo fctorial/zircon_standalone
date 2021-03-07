@@ -1,5 +1,6 @@
 #include <libs/utils/stdlib.h>
 #include <stdarg.h>
+#include <libs/headers/elf.h>
 #include "zk.h"
 
 int dprintf(const char *fmt, ...) {
@@ -12,7 +13,7 @@ int dprintf(const char *fmt, ...) {
   return result;
 }
 
-int dlog(char* key, char* fmt, ...) {
+int dlog(const char* key, char* fmt, ...) {
   int res1 = dprintf("%-40s", key);
   char buf[1024];
   va_list args;
@@ -145,5 +146,37 @@ zbi_bootfs_dirent_t* bootfs_find_file(zbi_bootfs_header_t* bootfs, char* name) {
     offset += sizeof(zbi_bootfs_dirent_t) + curr->name_len;
   }
   return NULL;
+}
+
+bool get_vdso_load_info(zx_handle_t vmo, vdso_load_info* info) {
+  Elf64_Ehdr header;
+#define TRY(exp, value) {\
+  zx_status_t status = exp; \
+  if (status != value) {    \
+    goto error;\
+  }\
+}
+  TRY(zx_vmo_read(vmo, &header, 0, sizeof(Elf64_Ehdr)), ZX_OK)
+  TRY(header.e_ident[0], '\x7f')
+  TRY(header.e_ident[1], 'E')
+  TRY(header.e_ident[2], 'L')
+  TRY(header.e_ident[3], 'F')
+  TRY(header.e_phnum < 16, 1)
+
+  Elf64_Phdr phdrs[16];
+  TRY(zx_vmo_read(vmo, &phdrs, header.e_phoff, sizeof(Elf64_Phdr) * header.e_phnum), ZX_OK)
+
+
+  for (int i=0; i<header.e_phnum; i++) {
+    if (phdrs[i].p_type == PT_LOAD && phdrs[i].p_flags & PF_X) {
+      info->exec_start = phdrs[i].p_offset;
+      info->exec_end = phdrs[i].p_offset + phdrs[i].p_filesz;
+      return true;
+    }
+  }
+
+  error:
+  return false;
+#undef TRY
 }
 
