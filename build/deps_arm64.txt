@@ -1,0 +1,3 @@
+host_x64/zbi
+kernel_arm64/kernel.zbi
+qemu-boot-shim.bin

@@ -1,0 +1,1 @@
+$FUCHSIA_DIR/prebuilt/third_party/qemu/linux-x64/bin/qemu-system-aarch64 -kernel $FUCHSIA_OUT/qemu-boot-shim.bin -initrd out/custom.zbi -m 128m -smp 4 -nographic -nic none -machine virtualization=true -cpu max -machine virt-2.12,gic-version=max

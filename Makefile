@@ -6,12 +6,13 @@ all: out/custom.zbi Makefile
 
 out/init: init.c libs Makefile ${SOURCES}
 	${CC} -ggdb -O0 -fno-stack-protector \
+	    -target $$([ -n "$$TARGET_IS_ARM" ] && echo aarch64-unknown-linux-gnu || echo x86_64-unknown-linux-gnu) \
 	    -I${FUCHSIA_DIR}/zircon/system/public -I. \
-	    -static -nostdlib -fPIC -fPIE -Wl,--entry=init \
+	    -static -nostdlib -fPIE -Wl,--entry=init -Wl,-pie \
 	    -o out/init ${SOURCES}
 	elfedit --output-type dyn out/init
 
-out/custom.zbi: build/make.sh out/init build/config ${FUCHSIA_OUT}/kernel_x64/kernel.zbi ${FUCHSIA_OUT}/multiboot.bin Makefile
+out/custom.zbi: build/make.sh out/init build/config ${FUCHSIA_OUT} Makefile
 	./build/make.sh
 
 clean:
