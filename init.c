@@ -3,7 +3,7 @@
 #include <libs/utils/zk.h>
 #include <libs/linker/linker.h>
 
-void child_init(zx_handle_t _, size_t *fns) {
+__attribute__((section("child_code"))) void child_init(zx_handle_t _, size_t *fns) {
   char msg[5];
   msg[0] = 'm';
   msg[1] = 'a';
@@ -16,6 +16,8 @@ void child_init(zx_handle_t _, size_t *fns) {
 }
 
 size_t addr;
+extern char __start_child_code;
+extern char __stop_child_code;
 
 void init(zx_handle_t chan, void *vdso) {
   link(vdso);
@@ -39,7 +41,7 @@ void init(zx_handle_t chan, void *vdso) {
   }
 
   const size_t child_mem_size = 4 * 1024;
-  int func_size = 512;
+  size_t func_size = &__stop_child_code - &__start_child_code;
   zx_handle_t child, cvmar, vdso_vmar, cthread, cmem;
 
   TRY(zx_process_create(handles.job_default, "child", 5, 0, &child, &cvmar))
