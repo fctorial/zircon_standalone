@@ -1,15 +1,15 @@
 CC=${FUCHSIA_DIR}/prebuilt/third_party/clang/linux-x64/bin/clang
 
-SOURCES=init.c libs/utils/stdlib.c libs/procargs/processargs.c libs/linker/linker.c libs/utils/zk.c
+LIBS=libs/utils/stdlib.c libs/procargs/processargs.c libs/linker/linker.c libs/utils/zk.c
 
 all: out/custom.zbi Makefile
 
-out/init: init.c libs Makefile ${SOURCES}
+out/init: init.c libs Makefile
 	${CC} -ggdb -O0 \
 	    -target $$([ -n "$$TARGET_IS_ARM" ] && echo aarch64-unknown-linux-gnu || echo x86_64-unknown-linux-gnu) \
 	    -I${FUCHSIA_DIR}/zircon/system/public -I. \
-	    -static -nostdlib -fPIE -mpie-copy-relocations -Wl,--entry=init -Wl,-pie \
-	    -o out/init ${SOURCES}
+	    -static -nostdlib -fPIE -mpie-copy-relocations -Wl,--entry=init \
+	    -o out/init init.c ${LIBS}
 	elfedit --output-type dyn out/init
 
 out/custom.zbi: build/make.sh out/init build/config ${FUCHSIA_OUT} Makefile
