@@ -5,10 +5,10 @@ SOURCES=init.c libs/utils/stdlib.c libs/procargs/processargs.c libs/linker/linke
 all: out/custom.zbi Makefile
 
 out/init: init.c libs Makefile ${SOURCES}
-	${CC} -ggdb -O0 -fno-stack-protector \
+	${CC} -ggdb -O0 \
 	    -target $$([ -n "$$TARGET_IS_ARM" ] && echo aarch64-unknown-linux-gnu || echo x86_64-unknown-linux-gnu) \
 	    -I${FUCHSIA_DIR}/zircon/system/public -I. \
-	    -static -nostdlib -fPIE -Wl,--entry=init -Wl,-pie \
+	    -static -nostdlib -fPIE -mpie-copy-relocations -Wl,--entry=init -Wl,-pie \
 	    -o out/init ${SOURCES}
 	elfedit --output-type dyn out/init
 
