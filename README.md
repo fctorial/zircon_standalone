@@ -2,4 +2,4 @@
 
 Run programs on zircon.
 
-## [Guide](https://fctorial.github.io/posts/zircon_standalone.html)
+## [Guide](https://fctorial.com/posts/zircon_standalone.html)

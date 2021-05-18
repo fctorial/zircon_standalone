@@ -8,7 +8,7 @@ out/init: init.c libs Makefile
 	${CC} -ggdb -O0 \
 	    -target $$([ -n "$$TARGET_IS_ARM" ] && echo aarch64-unknown-linux-gnu || echo x86_64-unknown-linux-gnu) \
 	    -I${FUCHSIA_DIR}/zircon/system/public -I. \
-	    -static -nostdlib -fPIE -mpie-copy-relocations -Wl,--entry=init \
+	    -static -nostdlib -fPIE -Wl,--entry=init \
 	    -o out/init init.c ${LIBS}
 	elfedit --output-type dyn out/init
 

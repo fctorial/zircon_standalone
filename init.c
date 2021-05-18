@@ -62,7 +62,7 @@ void init(zx_handle_t chan, void *vdso) {
   TRY(zx_vmo_write(cmem, fptrs, func_size, 2 * sizeof(size_t)))
   TRY(zx_process_start(child, cthread, (zx_vaddr_t) child_entry, (zx_vaddr_t) child_entry + child_mem_size - 16, ZX_HANDLE_INVALID, child_entry + func_size))
   zx_object_wait_one(child, ZX_PROCESS_TERMINATED, ZX_TIME_INFINITE, NULL);
-  struct zx_info_process info;
+  struct zx_info_process_v2 info;
   zx_object_get_info(child, ZX_INFO_PROCESS, &info, sizeof(info), NULL, NULL);
 
   end:

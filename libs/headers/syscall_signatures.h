@@ -43,12 +43,6 @@ extern zx_status_t __zx_clock_get ( zx_clock_t clock_id, zx_time_t* out);
 extern zx_time_t __zx_clock_get_monotonic (void);
 
 
-extern zx_status_t __zx_clock_adjust ( zx_handle_t handle, zx_clock_t clock_id, int64_t offset);
-
-
-
-
-
 extern zx_status_t __zx_clock_create ( uint64_t options, const void* args, zx_handle_t* out);
 
 
